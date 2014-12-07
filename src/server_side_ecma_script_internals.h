@@ -1,0 +1,8 @@
+#ifndef SRC_SERVER_SIDE_ECMA_SCRIPT_INTERNALS_H_
+#define SRC_SERVER_SIDE_ECMA_SCRIPT_INTERNALS_H_
+
+#ifndef ARRAY_SIZE
+# define ARRAY_SIZE(a) (sizeof((a)) / sizeof((a)[0]))
+#endif
+
+#endif // SRC_SERVER_SIDE_ECMA_SCRIPT_INTERNALS_H_
