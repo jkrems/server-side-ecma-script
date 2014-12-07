@@ -1,3 +1,4 @@
 config.gypi
 /build
 /deps
+.idea

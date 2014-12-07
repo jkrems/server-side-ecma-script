@@ -25,12 +25,27 @@ static void InitV8() {
   v8::V8::Initialize();
 }
 
-const char *sourceCode =
-  "function twice(x) {"
-  "  return x * 2;"
-  "}"
-  "log('twice(5) = ' + twice(5));"
-  "'done';";
+// Reads a file into a v8 string.
+v8::Handle<v8::String> ReadFile(v8::Isolate* isolate, const std::string& name) {
+  FILE* file = fopen(name.c_str(), "rb");
+  if (file == NULL) return v8::Handle<v8::String>();
+
+  fseek(file, 0, SEEK_END);
+  int size = ftell(file);
+  rewind(file);
+
+  char* chars = new char[size + 1];
+  chars[size] = '\0';
+  for (int i = 0; i < size;) {
+    int read = static_cast<int>(fread(&chars[i], 1, size - i, file));
+    i += read;
+  }
+  fclose(file);
+  v8::Handle<v8::String> result =
+          v8::String::NewFromUtf8(isolate, chars, v8::String::kNormalString, size);
+  delete[] chars;
+  return result;
+}
 
 int main(int argc, char *argv[]) {
   std::cout << "Hello World!" << std::endl;
@@ -55,7 +70,7 @@ int main(int argc, char *argv[]) {
 
     v8::Context::Scope context_scope(context);
 
-    v8::Local<v8::String> source = v8::String::NewFromUtf8(isolate, sourceCode);
+    v8::Local<v8::String> source = ReadFile(isolate, "examples/hello.js");
 
     v8::Local<v8::Script> script = v8::Script::Compile(source);
 
