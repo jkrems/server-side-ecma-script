@@ -29,4 +29,7 @@ build: build/Makefile
 run: build
 	@./build/$(BUILDTYPE)/server-side-ecma-script
 
+debug: build
+	@lldb ./build/$(BUILDTYPE)/server-side-ecma-script
+
 .PHONY: all build

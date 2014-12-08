@@ -81,8 +81,10 @@ void Platform::CallOnForegroundThread(Isolate* isolate, Task* task) {
 }
 
 
+#define NANOS_PER_SEC 1000000000
 double Platform::MonotonicallyIncreasingTime() {
-  return 0;
+  uint64_t t = uv_hrtime();
+  return static_cast<double>(t) / static_cast<double>(NANOS_PER_SEC);
 }
 
 

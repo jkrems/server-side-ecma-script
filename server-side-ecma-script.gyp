@@ -8,6 +8,7 @@
     ],
     'cflags_cc': [ '-fno-rtti', '-fno-exceptions', '-std=gnu++0x' ],
     'sources': [
+      'src/environment.cc',
       'src/main.cc',
       'src/node_v8_platform.cc',
       'src/util.cc',
