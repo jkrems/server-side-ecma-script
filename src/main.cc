@@ -16,7 +16,7 @@
 
 static void InitV8() {
   const char enable_es6[] =
-    "--harmony --harmony_object_literals --harmony_classes";
+    "--harmony";
   v8::V8::SetFlagsFromString(enable_es6, sizeof(enable_es6) - 1);
   v8::V8::InitializeICU();
   v8::V8::InitializePlatform(new node::Platform(/* threadCount = */ 4));

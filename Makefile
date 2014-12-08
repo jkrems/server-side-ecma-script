@@ -7,7 +7,17 @@ all: build
 build/gyp/gyp:
 	svn co http://gyp.googlecode.com/svn/trunk build/gyp --revision 1831
 
-build/Makefile: build/gyp/gyp
+deps/v8:
+	git clone git@github.com:v8/v8-git-mirror.git deps/v8
+	cd deps/v8 && git checkout 3.31.44
+
+deps/uv:
+	git clone git@github.com:libuv/libuv.git deps/uv
+	cd deps/uv && git checkout v1.0.1
+
+setup: build/gyp/gyp deps/v8 deps/uv
+
+build/Makefile:
 	$(GYP)	\
 		-Duv_library=static_library \
 		-Goutput_dir=. \
