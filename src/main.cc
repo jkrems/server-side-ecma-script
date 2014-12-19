@@ -5,6 +5,7 @@
 
 #include "node_v8_platform.h"
 #include "environment.h"
+#include "tty_wrap.h"
 
 // static void LogCallback(const v8::FunctionCallbackInfo<v8::Value>& args) {
 //   if (args.Length() < 1) return;
@@ -16,7 +17,7 @@
 
 static void InitV8() {
   const char enable_es6[] =
-    "--harmony";
+    "--harmony --harmony_arrow_functions";
   v8::V8::SetFlagsFromString(enable_es6, sizeof(enable_es6) - 1);
   v8::V8::InitializeICU();
   v8::V8::InitializePlatform(new node::Platform(/* threadCount = */ 4));
@@ -138,6 +139,20 @@ private:
   Environment *env_;
 };
 
+static void RunFileJS(const v8::FunctionCallbackInfo<v8::Value>& args) {
+  if (args.Length() < 1) return;
+  v8::Isolate *isolate = args.GetIsolate();
+  Environment *env = Environment::GetCurrent(isolate);
+  v8::HandleScope scope(isolate);
+
+  v8::Handle<v8::Value> arg = args[0];
+  v8::String::Utf8Value filename(arg);
+
+  v8::Handle<v8::Value> result = RunFile(env, *filename);
+
+  args.GetReturnValue().Set(result);
+}
+
 static void Delay(const v8::FunctionCallbackInfo<v8::Value>& args) {
   if (args.Length() < 1) return;
   v8::Isolate *isolate = args.GetIsolate();
@@ -159,17 +174,19 @@ static void Delay(const v8::FunctionCallbackInfo<v8::Value>& args) {
 static void Binding(const v8::FunctionCallbackInfo<v8::Value>& args) {
   if (args.Length() < 1) return;
   v8::Isolate* isolate = args.GetIsolate();
+  Environment *env = Environment::GetCurrent(isolate);
   v8::HandleScope scope(isolate);
 
   v8::Handle<v8::Value> arg = args[0];
   v8::String::Utf8Value value(arg);
 
-  v8::Local<v8::Object> exports;
+  v8::Local<v8::Object> exports(v8::Object::New(isolate));
   if (!strcmp(*value, "timers")) {
-    exports = v8::Object::New(isolate);
     SetMethod(isolate, exports, "delay", Delay);
-  } else {
-    exports = v8::Object::New(isolate);
+  } else if (!strcmp(*value, "script")) {
+    SetMethod(isolate, exports, "runFile", RunFileJS);
+  } else if (!strcmp(*value, "tty")) {
+    TTYWrap::Initialize(exports, env);
   }
 
   args.GetReturnValue().Set(exports);

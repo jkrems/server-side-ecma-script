@@ -13,7 +13,7 @@
           'GCC_ENABLE_PASCAL_STRINGS': 'NO',        # No -mpascal-strings
           'GCC_THREADSAFE_STATICS': 'NO',           # -fno-threadsafe-statics
           'PREBINDING': 'NO',                       # No -Wl,-prebind
-          'MACOSX_DEPLOYMENT_TARGET': '10.5',       # -mmacosx-version-min=10.5
+          'MACOSX_DEPLOYMENT_TARGET': '10.7',       # -mmacosx-version-min=10.7
           'USE_HEADERMAP': 'NO',
           'OTHER_CFLAGS': [
             '-fno-strict-aliasing',
@@ -24,6 +24,10 @@
             '-W',
             '-Wno-unused-parameter',
           ],
+          'cflags_cc': [ '-std=c++11' ],
+          'CLANG_CXX_LANGUAGE_STANDARD': 'c++11',
+          # 'OTHER_CPLUSPLUSFLAGS': [ '-stdlib=libc++' ],
+          # 'OTHER_LDFLAGS': [ '-stdlib=libc++' ],
         },
         'target_conditions': [
           ['_type!="static_library"', {
@@ -40,7 +44,7 @@
           ['clang==1', {
             'xcode_settings': {
               'GCC_VERSION': 'com.apple.compilers.llvm.clang.1_0',
-              'CLANG_CXX_LANGUAGE_STANDARD': 'gnu++0x',  # -std=gnu++0x
+              'CLANG_CXX_LANGUAGE_STANDARD': 'c++11',  # -std=c++11
             },
           }],
         ],

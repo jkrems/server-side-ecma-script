@@ -1,0 +1,28 @@
+{
+  "name": "server-side-ecma-script",
+  "version": "1.0.0",
+  "description": "## Build",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "node-gyp rebuild"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jkrems/server-side-ecma-script.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "gypfile": true,
+  "bugs": {
+    "url": "https://github.com/jkrems/server-side-ecma-script/issues"
+  },
+  "homepage": "https://github.com/jkrems/server-side-ecma-script",
+  "devDependencies": {
+    "6to5ify": "^2.0.0",
+    "browserify": "^7.0.2"
+  }
+}

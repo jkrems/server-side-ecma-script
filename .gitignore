@@ -2,3 +2,5 @@ config.gypi
 /build
 /deps
 .idea
+v8-git-mirror
+node_modules

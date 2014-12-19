@@ -11,6 +11,7 @@
       'src/environment.cc',
       'src/main.cc',
       'src/node_v8_platform.cc',
+      'src/tty_wrap.cc',
       'src/util.cc',
     ],
   }],

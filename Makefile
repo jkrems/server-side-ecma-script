@@ -33,7 +33,11 @@ clean:
 	rm -rf build/$(BUILDTYPE)
 	rm -f build/Makefile build/server-side-ecma-script.*
 
-build: build/Makefile
+.PHONY: lib/stream.js
+lib/stream.js:
+	./node_modules/.bin/browserify src/stream.js -s Stream -t 6to5ify --outfile lib/stream.js
+
+build: build/Makefile lib/stream.js
 	$(MAKE) -C $(BUILDDIR)
 
 run: build
